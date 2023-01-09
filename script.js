@@ -13,10 +13,12 @@ function renderRicks(rickArray) {
       (rick) =>
         `
             <section class="rick">
-                <h2 class="rick-name">${rick.name}</h2>
                 <img class="rick-img" src="${rick.image}"/>
-                <div class="rick-status">${rick.status}</div>
-                <div class="rick-location">${rick.location.name}</div>
+                <div class="rick-headers">
+                    <h3 class="rick-name">${rick.name}</h3>
+                    <div class="rick-status bold">Status: ${rick.status}</div>
+                    <div class="rick-location bold">Location: ${rick.location.name}</div>
+                </div>
                 <div class="rick-description">${rick.name} is one of our star employees!</div>
             </section>
         `
