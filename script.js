@@ -1,10 +1,37 @@
 // Fetches all characters from API
 const allRicksEl = document.getElementById("all-ricks");
+const statusDropdown = document.getElementById("status-select");
+let ricksArray = [];
+let filteredRicks = [];
 
 function fetchRicks() {
   fetch("https://rickandmortyapi.com/api/character/?name=rick")
     .then((response) => response.json())
-    .then((data) => renderRicks(data.results));
+    .then((data) => {
+      for (let i = 1; i <= data.info.pages; i++) {
+        fetch(`https://rickandmortyapi.com/api/character/?page=${i}&name=rick`)
+          .then((response) => response.json())
+          .then((data) => {
+            ricksArray = ricksArray.concat(data.results);
+            if (i === 6) {
+              renderRicks(ricksArray);
+              statusDropdown.addEventListener("change", () => {
+                filterRicks(ricksArray);
+              });
+            }
+          });
+      }
+    });
+}
+
+function filterRicks(ricks) {
+  // console.log(statusDropdown.value)
+  if (statusDropdown.value === 'all') {
+    renderRicks(ricksArray);
+  } else {
+  filteredRicks = ricks.filter((rick) => rick.status === statusDropdown.value);
+  console.log(filteredRicks);
+  renderRicks(filteredRicks)}
 }
 
 function renderRicks(rickArray) {
@@ -27,3 +54,7 @@ function renderRicks(rickArray) {
 }
 
 fetchRicks();
+
+// function filterRicks(ricks) {
+//     ricks.filter((rick) => rick.status)
+// }

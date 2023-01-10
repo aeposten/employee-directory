@@ -93,6 +93,8 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 0.25em;
+  border: 0.1em solid #EAEAEA;
   background-color: white;
 }
 
