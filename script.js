@@ -5,6 +5,8 @@ const searchElement = document.getElementById("search");
 
 let ricksArray = [];
 let filteredRicks = [];
+let searchedRicks = [];
+let filtered = false;
 
 function fetchRicks() {
   fetch("https://rickandmortyapi.com/api/character/?name=rick")
@@ -16,13 +18,18 @@ function fetchRicks() {
           .then((data) => {
             ricksArray = ricksArray.concat(data.results);
             if (i === 6) {
-              renderRicks(ricksArray);
+              if (!filtered) {
+                renderRicks(ricksArray);
+              }
               statusDropdown.addEventListener("change", () => {
+                filtered = true;
                 filterRicks(ricksArray);
+                renderRicks(filteredRicks);
               });
               searchElement.addEventListener("input", () => {
-                searchRicks(ricksArray)
-              })
+                searchRicks(ricksArray);
+                renderRicks(searchedRicks);
+              });
             }
           });
       }
@@ -31,16 +38,31 @@ function fetchRicks() {
 
 function filterRicks(ricks) {
   // console.log(statusDropdown.value)
-  if (statusDropdown.value === 'all') {
+  if (statusDropdown.value === "all") {
+    filtered = false;
     renderRicks(ricksArray);
+    filteredRicks = ricksArray;
   } else {
-  filteredRicks = ricks.filter((rick) => rick.status === statusDropdown.value);
-  renderRicks(filteredRicks)}
+    filtered = true;
+    filteredRicks = ricks.filter(
+      (rick) => rick.status === statusDropdown.value
+    );
+    //   renderRicks(filteredRicks)
+  }
+  return filteredRicks;
 }
 
 function searchRicks(ricks) {
-    filteredRicks = ricks.filter((rick) => rick.name.toLowerCase().includes(searchElement.value.toLowerCase()));
-    renderRicks(filteredRicks)
+  if (filtered) {
+    searchedRicks = filteredRicks.filter((rick) =>
+      rick.name.toLowerCase().includes(searchElement.value.toLowerCase())
+    );
+  } else {
+    searchedRicks = ricks.filter((rick) =>
+      rick.name.toLowerCase().includes(searchElement.value.toLowerCase())
+    );
+  }
+  return searchedRicks;
 }
 
 function renderRicks(rickArray) {
