@@ -1,6 +1,8 @@
 // Fetches all characters from API
 const allRicksEl = document.getElementById("all-ricks");
 const statusDropdown = document.getElementById("status-select");
+const searchElement = document.getElementById("search");
+
 let ricksArray = [];
 let filteredRicks = [];
 
@@ -18,6 +20,9 @@ function fetchRicks() {
               statusDropdown.addEventListener("change", () => {
                 filterRicks(ricksArray);
               });
+              searchElement.addEventListener("input", () => {
+                searchRicks(ricksArray)
+              })
             }
           });
       }
@@ -30,8 +35,12 @@ function filterRicks(ricks) {
     renderRicks(ricksArray);
   } else {
   filteredRicks = ricks.filter((rick) => rick.status === statusDropdown.value);
-  console.log(filteredRicks);
   renderRicks(filteredRicks)}
+}
+
+function searchRicks(ricks) {
+    filteredRicks = ricks.filter((rick) => rick.name.toLowerCase().includes(searchElement.value));
+    renderRicks(filteredRicks)
 }
 
 function renderRicks(rickArray) {
@@ -54,7 +63,3 @@ function renderRicks(rickArray) {
 }
 
 fetchRicks();
-
-// function filterRicks(ricks) {
-//     ricks.filter((rick) => rick.status)
-// }
