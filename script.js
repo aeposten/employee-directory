@@ -39,7 +39,7 @@ function filterRicks(ricks) {
 }
 
 function searchRicks(ricks) {
-    filteredRicks = ricks.filter((rick) => rick.name.toLowerCase().includes(searchElement.value));
+    filteredRicks = ricks.filter((rick) => rick.name.toLowerCase().includes(searchElement.value.toLowerCase()));
     renderRicks(filteredRicks)
 }
 
